@@ -23,10 +23,10 @@ This project is part of Google Summer of Code 2025, undertaken with the Departme
 
 ## Technologies Used
 
-Programming Languages: Golang
-Frameworks/Libraries: net/http
-Standards/Protocols: gRPC, protobuf
-Tools: Tarball, Systemd, Shell Scripting
+- **Programming Languages:** Golang
+- **Frameworks/Libraries:** net/http
+- **Standards/Protocols:** gRPC, protobuf
+- **Tools:** Tarball, Systemd, Shell Scripting
 
 ## License
 
