@@ -33,6 +33,20 @@ Institutional departments, such as the Biomedical Informatics (BMI) Department o
 - `main`: Production-ready code
 - `development-v<version>`: Development branches for specific versions
 
+### ACL API Daemon 
+
+The ACL API Daemom, a service called `aclapi` handles the gRPC connections with the backend component. 
+
+It performs 2 jobs: 
+1. Communicate with `aclcore` daemon about demanded ACL operations
+2. Handler gRPC connections from backed component
+
+It is provided with the least user privileges since it's exposed to the network.
+
+Hence, this is not an independent component and needs `aclcore` to be running on the same server with proper setup.
+
+Refer to the documentation for more information.
+
 ### Production Build (Manual)
 
 For production build, it is recommended to use the Makefile. This allows you to build the complete binary on locally for security purposes. Since the project is in development mode, complete local build is not possible since dependencies are managed via GitHub and external vendors. Tarball based complete local builds will be developed in later stages.
@@ -53,7 +67,6 @@ Manual build provides more indepth look into how components are deployed and wor
 3. Move the binary to /usr/local/bin
     ```bash
     sudo cp ./bin/acl-api /usr/local/bin/
-    sudo cp ./bin/acl-core /usr/local/bin/
     ```
 
 4. Create service for ACL API Daemon
@@ -61,10 +74,10 @@ Manual build provides more indepth look into how components are deployed and wor
     a. Create the systemd service file
 
     ```bash
-    touch /etc/systemd/system/aclcore.service
+    touch /etc/systemd/system/aclapi.service
     ```
 
-    b. Copy this into aclcore.service
+    b. Copy this into aclapi.service
 
     ```ini
     [Unit]
@@ -80,48 +93,22 @@ Manual build provides more indepth look into how components are deployed and wor
     [Install]
     WantedBy=multi-user.target
     ```
-5. Create service for ACL Core Daemon
-
-    a. Create the systemd service file
-    ```bash
-    touch /etc/systemd/system/aclapi.service
-    ```
-
-    b. Copy this into aclcore.service
-    ```ini
-    [Unit]
-    Description=ACL Core Daemon
-    After=network.target
-
-    [Service]
-    ExecStart=/usr/local/bin/aclcore --config /etc/laclm/config.yaml
-    Restart=on-failure
-    User=nobody
-    Group=nogroup
-
-    [Install]
-    WantedBy=multi-user.target
-    ```
-6. Enable and start both services
+5. Enable and start both services
     
     ```bash
     sudo systemctl daemon-reexec
     sudo systemctl daemon-reload
 
     sudo systemctl enable aclapi.service
-    sudo systemctl enable aclcore.service
 
     sudo systemctl start aclapi.service
-    sudo systemctl start aclcore.service
     ```
 
-7. Check status and logs
+6. Check status and logs
     ```bash
     sudo systemctl status aclapi.service
-    sudo systemctl status aclcore.service
 
     journalctl -u aclapi.service -f
-    journalctl -u aclcore.service -f
     ```
 
 ## Project Structure
