@@ -1,4 +1,4 @@
-module aclapi
+module github.com/PythonHacker24/linux-acl-management-aclapi
 
 go 1.24.2
 

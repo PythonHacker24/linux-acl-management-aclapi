@@ -5,6 +5,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/PythonHacker24/linux-acl-management-aclapi"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -18,6 +21,9 @@ func exec() error {
 	/* config must load here in exec() if needed to */
 
 	utils.InitLogger(true)
+
+	/* zap.L() can be used all over the code for global level logging */
+	zap.L().Info("Logger Initiated ...")
 
 	/* preparing graceful shutdown */
 	ctx, cancel := context.WithCancel(context.Background())
