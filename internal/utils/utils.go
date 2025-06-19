@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"acl-daemon/config"
 	"log"
 	"os"
 
+	"github.com/PythonHacker24/linux-acl-management-aclapi/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -15,7 +15,7 @@ var (
 )
 
 /* initializes the zap logger and provides global logging */
-func InitLogger(isProduction bool, config config.LogConfig) {
+func InitLogger(isProduction bool) {
 	var encoder zapcore.Encoder
 	var writeSyncer zapcore.WriteSyncer
 	var logLevel zapcore.Level
@@ -25,11 +25,11 @@ func InitLogger(isProduction bool, config config.LogConfig) {
 		encoder = zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
 		logLevel = zapcore.InfoLevel
 		writeSyncer = zapcore.AddSync(&lumberjack.Logger{
-			Filename:   config.LogConfig.File,
-			MaxSize:    config.LogConfig.MaxSize, // MB
-			MaxBackups: config.LogConfig.MaxBackups,
-			MaxAge:     config.LogConfig.MaxBackups, // days
-			Compress:   config.LogConfig.Compress,
+			Filename:   config.APIDConfig.Logging.File,
+			MaxSize:    config.APIDConfig.Logging.MaxSize, // MB
+			MaxBackups: config.APIDConfig.Logging.MaxBackups,
+			MaxAge:     config.APIDConfig.Logging.MaxBackups, // days
+			Compress:   config.APIDConfig.Logging.Compress,
 		})
 	} else {
 
