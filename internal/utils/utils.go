@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	Log *zap.Logger 
+	Log *zap.Logger
 )
 
 /* initializes the zap logger and provides global logging */
