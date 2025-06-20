@@ -1,9 +1,8 @@
-PROJECT_NAME := acl-daemon
-PROTO_DIR     := proto
+PROJECT_NAME := aclapi
+PROTO_DIR     := internal/grpcserver/protos
 GO_PACKAGES   := ./cmd/... ./internal/...
 BUILD_DIR     := bin
 
-CORE_BIN      := $(BUILD_DIR)/aclcore
 API_BIN       := $(BUILD_DIR)/aclapi
 
 PROTOC         := protoc
@@ -14,11 +13,7 @@ PROTOC_GEN_GRPC:= protoc-gen-go-grpc
 all: fmt vet proto build
 
 .PHONY: build
-build: $(CORE_BIN) $(API_BIN)
-
-$(CORE_BIN):
-	@mkdir -p $(BUILD_DIR)
-	GOOS=linux GOARCH=amd64 go build -o $@ ./cmd/aclcore
+build: $(API_BIN)
 
 $(API_BIN):
 	@mkdir -p $(BUILD_DIR)
@@ -28,9 +23,9 @@ $(API_BIN):
 proto:
 	@echo "Generating protobuf code..."
 	$(PROTOC) \
-	  --proto_path=$(PROTO_DIR) \
-	  --go_out=$(PROTO_DIR) --go_opt=paths=source_relative \
-	  --go-grpc_out=$(PROTO_DIR) --go-grpc_opt=paths=source_relative \
+	  --proto_path=. \
+	  --go_out=. --go_opt=paths=source_relative \
+	  --go-grpc_out=. --go-grpc_opt=paths=source_relative \
 	  $(PROTO_DIR)/*.proto
 
 .PHONY: fmt
@@ -56,12 +51,9 @@ test:
 .PHONY: install
 install: build
 	@echo "Installing binaries to /usr/local/bin..."
-	install -m 755 $(CORE_BIN) /usr/local/bin/aclcore
 	install -m 755 $(API_BIN)  /usr/local/bin/aclapi
 
-.PHONY: docker-core docker-api
-docker-core:
-	docker build -f Dockerfile.core -t aclcore:latest .
+.PHONY: docker-api
 
 docker-api:
 	docker build -f Dockerfile.api  -t aclapi:latest .
@@ -72,10 +64,7 @@ clean:
 	rm -rf $(BUILD_DIR)
 	find . -type f -name '*.pb.go' -delete
 
-.PHONY: run-core run-api
-run-core: $(CORE_BIN)
-	@echo "Running aclcore (root)..."
-	sudo $(CORE_BIN)
+.PHONY: run-api
 
 run-api: $(API_BIN)
 	@echo "Running aclapi (as aclapi user)..."
