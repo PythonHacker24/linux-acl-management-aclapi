@@ -3,18 +3,18 @@ package config
 import "fmt"
 
 var (
-	APIDConfig apidconfig
+	APIDConfig ADConfig 
 )
 
 /* config struct for aclapi */
-type apidconfig struct {
+type ADConfig struct {
 	DConfig 	DConfig 	`yaml:"daemon,omitempty"`
 	Logging		Logging 	`yaml:"logs,omitempty"`
 	Server      Server      `yaml:"server,omitempty"`
 }
 
 /* complete config normalizer function */
-func (c *apidconfig) Normalize() error {
+func (c *ADConfig) Normalize() error {
 	
 	if err := c.DConfig.Normalize(); err != nil {
 		return fmt.Errorf("daemon configuration error: %w", err)
