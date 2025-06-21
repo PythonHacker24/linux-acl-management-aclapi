@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/PythonHacker24/linux-acl-management-aclapi/internal/acl"
 	pb "github.com/PythonHacker24/linux-acl-management-aclapi/internal/grpcserver/protos"
 )
 
@@ -38,6 +39,7 @@ func InitServer() (*Server, error) {
 	/* registering services */
 	// pb.RegisterACLServiceServer(grpcServer, &ACLServer{})
 	pb.RegisterPingServiceServer(grpcServer, &PingHandler{})
+	pb.RegisterACLServiceServer(grpcServer, &acl.ACLServer{})
 
 	/* enable reflection if daemon is in debug mode */
 	if config.APIDConfig.DConfig.DebugMode {
