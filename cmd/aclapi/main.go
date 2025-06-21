@@ -1,4 +1,4 @@
-package main 
+package main
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"syscall"
 	"time"
 
-	"go.uber.org/zap"
-	"github.com/spf13/cobra"
 	"github.com/MakeNowJust/heredoc"
+	"github.com/spf13/cobra"
+	"go.uber.org/zap"
 
 	"github.com/PythonHacker24/linux-acl-management-aclapi/config"
 	"github.com/PythonHacker24/linux-acl-management-aclapi/internal/grpcserver"
@@ -19,12 +19,12 @@ import (
 
 func main() {
 	if err := exec(); err != nil {
-		os.Exit(1)	
+		os.Exit(1)
 	}
 }
 
 func exec() error {
-	
+
 	/* config must load here in exec() if needed to */
 
 	/* setting up cobra for cli interactions */
@@ -94,7 +94,6 @@ func exec() error {
 
 func run(ctx context.Context) error {
 
-
 	grpcServer, err := grpcserver.InitServer()
 	if err != nil {
 		zap.L().Error("Failed to initialize gRPC server",
@@ -105,7 +104,7 @@ func run(ctx context.Context) error {
 	/* creating the gRPC listener */
 	listener, err := grpcServer.Start()
 	if err != nil {
-		zap.L().Error("Failed to start gRPC server", 
+		zap.L().Error("Failed to start gRPC server",
 			zap.Error(err),
 		)
 		return err
@@ -146,4 +145,3 @@ func run(ctx context.Context) error {
 
 	return nil
 }
-
