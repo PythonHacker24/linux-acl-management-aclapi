@@ -55,8 +55,8 @@ Manual build provides more indepth look into how components are deployed and wor
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/PythonHacker24/linux-acl-management-daemon.git
-   cd linux-acl-management-daemon
+   git clone https://github.com/PythonHacker24/linux-acl-management-aclapi.git
+   cd linux-acl-management-aclapi
    ```
 
 2. Use make:
@@ -85,7 +85,7 @@ Manual build provides more indepth look into how components are deployed and wor
     After=network.target
 
     [Service]
-    ExecStart=/usr/local/bin/aclapi --config /etc/laclm/config.yaml
+    ExecStart=/usr/local/bin/aclapi --config /etc/laclm/aclapi.yaml
     Restart=on-failure
     User=nobody
     Group=nogroup
