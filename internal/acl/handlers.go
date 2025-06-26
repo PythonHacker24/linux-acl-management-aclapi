@@ -8,6 +8,7 @@ import (
 	"github.com/PythonHacker24/linux-acl-management-aclapi/config"
 	"github.com/PythonHacker24/linux-acl-management-aclapi/internal/grpcserver/protos"
 	pb "github.com/PythonHacker24/linux-acl-management-aclapi/internal/grpcserver/protos"
+	"go.uber.org/zap"
 )
 
 /* ACL Server for gRPC endpoint */
@@ -34,12 +35,18 @@ func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *protos.ApplyACLReque
 	/* marshall the ACL modification message to JSON data */
 	acldata, err := json.Marshal(aclmsg)
 	if err != nil {
+		zap.L().Error("JSON encoding failed",
+			zap.Error(err),
+		)
 		return &pb.ApplyACLResponse{Success: false, Message: "JSON encoding failed"}, nil
 	}
 
 	/* create a unix socket connection to communicate with ACL core daemon */
 	conn, err := net.Dial("unix", socketPath)
 	if err != nil {
+		zap.L().Error("Failed to connect to root daemon",
+			zap.Error(err),
+		)
 		return &pb.ApplyACLResponse{Success: false, Message: "Failed to connect to root daemon"}, nil
 	}
 	defer conn.Close()
@@ -47,6 +54,9 @@ func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *protos.ApplyACLReque
 	/* write the ACL JSON data into the connection */
 	_, err = conn.Write(acldata)
 	if err != nil {
+		zap.L().Error("Failed to write to socket",
+			zap.Error(err),
+		)
 		return &pb.ApplyACLResponse{Success: false, Message: "Failed to write to socket"}, nil
 	}
 
@@ -54,6 +64,9 @@ func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *protos.ApplyACLReque
 	respBuf := make([]byte, 1024)
 	aclResp, err := conn.Read(respBuf)
 	if err != nil {
+		zap.L().Error("Failed to read from socket",
+			zap.Error(err),
+		)
 		return &pb.ApplyACLResponse{Success: false, Message: "Failed to read from socket"}, nil
 	}
 
@@ -66,6 +79,9 @@ func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *protos.ApplyACLReque
 	/* unmarshal JSON response */
 	err = json.Unmarshal(respBuf[:aclResp], &response)
 	if err != nil {
+		zap.L().Error("Failed to parse response",
+			zap.Error(err),
+		)
 		return &pb.ApplyACLResponse{Success: false, Message: "Failed to parse response"}, nil
 	}
 
