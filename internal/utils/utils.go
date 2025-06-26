@@ -4,10 +4,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/PythonHacker24/linux-acl-management-aclapi/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+
+	"github.com/PythonHacker24/linux-acl-management-aclapi/config"
 )
 
 var (
