@@ -34,7 +34,7 @@ func exec() error {
 			Use:   "aclapi <command> <subcommand>",
 			Short: "API Daemon for linux acl management",
 			Example: heredoc.Doc(`
-				$ aclapi --config /path/to/config.yaml
+				$ aclapi --config /path/to/aclapi.yaml
 			`),
 			Run: func(cmd *cobra.Command, args []string) {
 				if configPath != "" {
