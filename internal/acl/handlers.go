@@ -6,7 +6,6 @@ import (
 	"net"
 
 	"github.com/PythonHacker24/linux-acl-management-aclapi/config"
-	"github.com/PythonHacker24/linux-acl-management-aclapi/internal/grpcserver/protos"
 	pb "github.com/PythonHacker24/linux-acl-management-aclapi/internal/grpcserver/protos"
 	"go.uber.org/zap"
 )
@@ -17,7 +16,7 @@ type ACLServer struct {
 }
 
 /* handler for handling ACL entry requests */
-func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *protos.ApplyACLRequest) (*pb.ApplyACLResponse, error) {
+func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *pb.ApplyACLRequest) (*pb.ApplyACLResponse, error) {
 	/* set the socket path as per the configuration */
 	socketPath := config.APIDConfig.DConfig.SocketPath
 
