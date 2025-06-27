@@ -19,16 +19,17 @@ func InitServer() (*Server, error) {
 
 	/* loading TLS credentials if specified */
 	if config.APIDConfig.Server.TLSEnabled {
-		creds, err := loadTLSCredentials(
+		creds, err := loadMutualTLSCredentials(
 			config.APIDConfig.Server.TLSCertFile,
 			config.APIDConfig.Server.TLSKeyFile,
+			config.APIDConfig.Server.TLSCACertFile,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("Failed to load TLS certificate and TLS Key files: %w", err)
 		}
 
 		opts = append(opts, grpc.Creds(creds))
-		zap.L().Info("TLS enabled for gRPC")
+		zap.L().Info("mTLS enabled for gRPC")
 	} else {
 		zap.L().Warn("Proceeding to start gRPC without TLS")
 	}
@@ -36,7 +37,7 @@ func InitServer() (*Server, error) {
 	/* setting options to the gRPC server */
 	// grpcServer := grpc.NewServer(opts...)
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(UnaryServerInterceptor()),
+		append(opts, grpc.UnaryInterceptor(UnaryServerInterceptor()))...,
 	)
 
 	/* registering services */
