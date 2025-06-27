@@ -22,10 +22,12 @@ func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *pb.ApplyACLRequest) 
 
 	/* create the ACL modification message */
 	aclmsg := struct {
+		TxnID  string `json:"transactionID"`
 		Action string `json:"action"`
 		Entry  string `json:"entry"`
 		Path   string `json:"path"`
 	}{
+		TxnID: 	req.TransactionID,
 		Action: req.Entry.Action,
 		Entry:  buildACLEntry(req.Entry),
 		Path:   req.TargetPath,
