@@ -9,11 +9,12 @@ import (
 
 /* server config for daemon (grpc network configurations) */
 type Server struct {
-	Host	 	string 	`yaml:"host,omitempty"`
-	GrpcPort 	int		`yaml:"grpc_port,omitempty"`	
-	TLSEnabled	bool 	`yaml:"tls_enabled,omitempty"`
-	TLSCertFile	string 	`yaml:"tls_cert_file,omitempty"`
-	TLSKeyFile	string 	`yaml:"tls_key_file,omitempty"`
+	Host	 		string 	`yaml:"host,omitempty"`
+	GrpcPort 		int		`yaml:"grpc_port,omitempty"`	
+	TLSEnabled		bool 	`yaml:"tls_enabled,omitempty"`
+	TLSCertFile		string 	`yaml:"tls_cert_file,omitempty"`
+	TLSKeyFile		string 	`yaml:"tls_key_file,omitempty"`
+	TLSCACertFile	string 	`yaml:"tls_ca_key_file,omitempty"`
 }
 
 /* normalization function */
@@ -39,6 +40,14 @@ func (s *Server) Normalize() error {
 		}
 
 		if s.TLSKeyFile == "" {
+			return errors.New(heredoc.Doc(`
+				TLS key file not provided in the config file	
+
+				Please check the docs for more information: 
+			`))
+		}
+
+		if s.TLSCACertFile == "" {
 			return errors.New(heredoc.Doc(`
 				TLS key file not provided in the config file	
 
