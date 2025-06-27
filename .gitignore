@@ -7,3 +7,5 @@
 # Env files
 .env
 .env.*
+
+/cert/
