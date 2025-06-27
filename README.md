@@ -95,7 +95,7 @@ Manual build provides more indepth look into how components are deployed and wor
     ```ini
     [Unit]                                           
     Description=ACL API Daemon
-    After=network.target laclm-daemon.service
+    After=network.target
     Requires=aclcore.service
 
     [Service]
