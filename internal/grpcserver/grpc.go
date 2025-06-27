@@ -34,7 +34,10 @@ func InitServer() (*Server, error) {
 	}
 
 	/* setting options to the gRPC server */
-	grpcServer := grpc.NewServer(opts...)
+	// grpcServer := grpc.NewServer(opts...)
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(UnaryServerInterceptor()),
+	)
 
 	/* registering services */
 	// pb.RegisterACLServiceServer(grpcServer, &ACLServer{})
