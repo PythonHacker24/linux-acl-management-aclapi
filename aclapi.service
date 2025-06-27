@@ -1,0 +1,22 @@
+[Unit]                                           
+Description=ACL API Daemon
+After=network.target
+Requires=aclcore.service
+
+[Service]
+Type=simple
+
+ExecStart=/usr/local/bin/aclapi --config /etc/laclm/aclapi.yaml
+
+User=aclapi
+Group=laclm
+
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
