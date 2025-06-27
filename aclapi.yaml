@@ -30,3 +30,5 @@ server:
   tls_cert_file: ""
   # Path to TLS key file (required if tls_enabled is true)
   tls_key_file: ""
+  # Path to CA certificate file (required if tls_enabled is true)
+  tls_ca_cert_file: ""
