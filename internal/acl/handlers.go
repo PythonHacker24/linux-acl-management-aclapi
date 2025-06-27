@@ -27,7 +27,7 @@ func (s *ACLServer) ApplyACLEntry(ctx context.Context, req *pb.ApplyACLRequest) 
 		Entry  string `json:"entry"`
 		Path   string `json:"path"`
 	}{
-		TxnID: 	req.TransactionID,
+		TxnID:  req.TransactionID,
 		Action: req.Entry.Action,
 		Entry:  buildACLEntry(req.Entry),
 		Path:   req.TargetPath,
