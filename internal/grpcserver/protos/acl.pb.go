@@ -99,8 +99,9 @@ func (x *ACLEntry) GetIsDefault() bool {
 
 type ApplyACLRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	TargetPath    string                 `protobuf:"bytes,1,opt,name=target_path,json=targetPath,proto3" json:"target_path,omitempty"`
-	Entry         *ACLEntry              `protobuf:"bytes,2,opt,name=entry,proto3" json:"entry,omitempty"`
+	TransactionID string                 `protobuf:"bytes,1,opt,name=transactionID,proto3" json:"transactionID,omitempty"`
+	TargetPath    string                 `protobuf:"bytes,2,opt,name=target_path,json=targetPath,proto3" json:"target_path,omitempty"`
+	Entry         *ACLEntry              `protobuf:"bytes,3,opt,name=entry,proto3" json:"entry,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -133,6 +134,13 @@ func (x *ApplyACLRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ApplyACLRequest.ProtoReflect.Descriptor instead.
 func (*ApplyACLRequest) Descriptor() ([]byte, []int) {
 	return file_internal_grpcserver_protos_acl_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ApplyACLRequest) GetTransactionID() string {
+	if x != nil {
+		return x.TransactionID
+	}
+	return ""
 }
 
 func (x *ApplyACLRequest) GetTargetPath() string {
@@ -213,11 +221,12 @@ const file_internal_grpcserver_protos_acl_proto_rawDesc = "" +
 	"\vpermissions\x18\x03 \x01(\tR\vpermissions\x12\x16\n" +
 	"\x06action\x18\x04 \x01(\tR\x06action\x12\x1d\n" +
 	"\n" +
-	"is_default\x18\x05 \x01(\bR\tisDefault\"W\n" +
-	"\x0fApplyACLRequest\x12\x1f\n" +
-	"\vtarget_path\x18\x01 \x01(\tR\n" +
+	"is_default\x18\x05 \x01(\bR\tisDefault\"}\n" +
+	"\x0fApplyACLRequest\x12$\n" +
+	"\rtransactionID\x18\x01 \x01(\tR\rtransactionID\x12\x1f\n" +
+	"\vtarget_path\x18\x02 \x01(\tR\n" +
 	"targetPath\x12#\n" +
-	"\x05entry\x18\x02 \x01(\v2\r.acl.ACLEntryR\x05entry\"F\n" +
+	"\x05entry\x18\x03 \x01(\v2\r.acl.ACLEntryR\x05entry\"F\n" +
 	"\x10ApplyACLResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage2J\n" +

@@ -17,8 +17,9 @@ message ACLEntry {
 }
 
 message ApplyACLRequest {
-  string target_path = 1;
-  ACLEntry entry = 2;
+  string transactionID = 1;
+  string target_path = 2;
+  ACLEntry entry = 3;
 }
 
 message ApplyACLResponse {
