@@ -66,10 +66,23 @@ Manual build provides more indepth look into how components are deployed and wor
 
 3. Move the binary to /usr/local/bin
     ```bash
-    sudo cp ./bin/acl-api /usr/local/bin/
+    sudo cp ./bin/aclapi /usr/local/bin/
     ```
 
-4. Create service for ACL API Daemon
+4. Move configuration file to /etc/laclm
+    ```bash
+    sudo cp aclapi.yaml /etc/laclm/aclapi.yaml
+    ```
+
+5. Ensure you have a group called `laclm`. It should be followed in steps [aclcore daemon installation](https://github.com/PythonHacker24/linux-acl-management-aclcore)
+
+6. Create a user called `aclapi` with no home, least privileges, and added into `laclm` group.
+
+    ```bash
+    sudo useradd --system --no-create-home --shell /usr/sbin/nologin --groups laclm aclapi
+    ```
+
+7. Create service for ACL API Daemon
 
     a. Create the systemd service file
 
@@ -80,35 +93,57 @@ Manual build provides more indepth look into how components are deployed and wor
     b. Copy this into aclapi.service
 
     ```ini
-    [Unit]
+    [Unit]                                           
     Description=ACL API Daemon
-    After=network.target
+    After=network.target laclm-daemon.service
+    Requires=aclcore.service
 
     [Service]
+    Type=simple
+
+    # Where the binary is
     ExecStart=/usr/local/bin/aclapi --config /etc/laclm/aclapi.yaml
+
+    # Run unprivileged
+    User=aclapi
+    Group=laclm
+
+    # Security hardening
+    NoNewPrivileges=yes
+    ProtectSystem=strict
+    ProtectHome=yes
+    PrivateTmp=yes
+
+    # Allow network (needs to serve gRPC)
+    # So: Do NOT set PrivateNetwork=yes!
+
     Restart=on-failure
-    User=nobody
-    Group=nogroup
 
     [Install]
     WantedBy=multi-user.target
     ```
-5. Enable and start both services
+
+8. Reload SystemD daemons
     
     ```bash
-    sudo systemctl daemon-reexec
     sudo systemctl daemon-reload
+    ```
 
+9. Enable aclapi service (optional: daemon will auto start when system is restarted)
+    
+    ```bash
     sudo systemctl enable aclapi.service
+    ```
 
+10. Start aclapi service
+   
+    ```bash
     sudo systemctl start aclapi.service
     ```
 
-6. Check status and logs
+11. Check aclapi status 
     ```bash
     sudo systemctl status aclapi.service
-
-    journalctl -u aclapi.service -f
     ```
 
 ## Project Structure
