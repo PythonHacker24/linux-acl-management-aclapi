@@ -74,7 +74,7 @@ Manual build provides more indepth look into how components are deployed and wor
     sudo cp aclapi.yaml /etc/laclm/aclapi.yaml
     ```
 
-5. Ensure you have a group called `laclm`. It should be followed in steps [aclcore daemon installation](https://github.com/PythonHacker24/linux-acl-management-aclcore)
+5. Ensure you have a group called `laclm`. It should be followed in steps [aclcore daemon installation](https://github.com/PythonHacker24/linux-acl-management-aclcore).
 
 6. Create a user called `aclapi` with no home, least privileges, and added into `laclm` group.
 
@@ -101,21 +101,15 @@ Manual build provides more indepth look into how components are deployed and wor
     [Service]
     Type=simple
 
-    # Where the binary is
     ExecStart=/usr/local/bin/aclapi --config /etc/laclm/aclapi.yaml
 
-    # Run unprivileged
     User=aclapi
     Group=laclm
 
-    # Security hardening
     NoNewPrivileges=yes
     ProtectSystem=strict
     ProtectHome=yes
     PrivateTmp=yes
-
-    # Allow network (needs to serve gRPC)
-    # So: Do NOT set PrivateNetwork=yes!
 
     Restart=on-failure
 
