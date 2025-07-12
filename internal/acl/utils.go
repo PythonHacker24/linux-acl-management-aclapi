@@ -14,7 +14,7 @@ func buildACLEntry(entry *pb.ACLEntry) string {
 
 	entity := entry.Entity
 	if entity == "" {
-		entity = ""
+		entity = "user"
 	}
 
 	return fmt.Sprintf("%s%s:%s:%s", prefix, entry.EntityType, entity, entry.Permissions)
