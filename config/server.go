@@ -9,17 +9,17 @@ import (
 
 /* server config for daemon (grpc network configurations) */
 type Server struct {
-	Host	 		string 	`yaml:"host,omitempty"`
-	GrpcPort 		int		`yaml:"grpc_port,omitempty"`	
-	TLSEnabled		bool 	`yaml:"tls_enabled,omitempty"`
-	TLSCertFile		string 	`yaml:"tls_cert_file,omitempty"`
-	TLSKeyFile		string 	`yaml:"tls_key_file,omitempty"`
-	TLSCACertFile	string 	`yaml:"tls_ca_key_file,omitempty"`
+	Host			string	`yaml:"host,omitempty"`
+	GrpcPort		int		`yaml:"grpc_port,omitempty"`
+	TLSEnabled		bool	`yaml:"tls_enabled,omitempty"`
+	TLSCertFile		string	`yaml:"tls_cert_file,omitempty"`
+	TLSKeyFile		string	`yaml:"tls_key_file,omitempty"`
+	TLSCACertFile	string	`yaml:"tls_ca_cert_file,omitempty"`
 }
 
 /* normalization function */
 func (s *Server) Normalize() error {
-	
+
 	/* bind daemon to "0.0.0.0" */
 	if s.Host == "" {
 		s.Host = "0.0.0.0"
@@ -49,7 +49,7 @@ func (s *Server) Normalize() error {
 
 		if s.TLSCACertFile == "" {
 			return errors.New(heredoc.Doc(`
-				TLS key file not provided in the config file	
+				TLS CA Certificate Chain file not provided in the config file	
 
 				Please check the docs for more information: 
 			`))
@@ -60,5 +60,5 @@ func (s *Server) Normalize() error {
 		fmt.Printf("Prefer using TLS for security\n\n")
 	}
 
-	return nil 
-} 
+	return nil
+}

@@ -2,13 +2,13 @@ package config
 
 /* daemon config */
 type DConfig struct {
-	DebugMode 	bool		`yaml:"debug_mode,omitempty"`   
+	DebugMode	bool		`yaml:"debug_mode,omitempty"`
 	SocketPath  string		`yaml:"socket_path,omitempty"`
 }
 
 /* normalization function */
 func (d *DConfig) Normalize() error {
-	
+
 	/* 
 		debug_mode is false by default
 		daemon will run on production mode by default
