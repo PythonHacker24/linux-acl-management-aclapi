@@ -3,19 +3,19 @@ package config
 import "fmt"
 
 var (
-	APIDConfig ADConfig 
+	APIDConfig ADConfig
 )
 
 /* config struct for aclapi */
 type ADConfig struct {
-	DConfig 	DConfig 	`yaml:"daemon,omitempty"`
-	Logging		Logging 	`yaml:"logs,omitempty"`
-	Server      Server      `yaml:"server,omitempty"`
+	DConfig	DConfig	`yaml:"daemon,omitempty"`
+	Logging	Logging	`yaml:"logs,omitempty"`
+	Server	Server	`yaml:"server,omitempty"`
 }
 
 /* complete config normalizer function */
 func (c *ADConfig) Normalize() error {
-	
+
 	if err := c.DConfig.Normalize(); err != nil {
 		return fmt.Errorf("daemon configuration error: %w", err)
 	}
@@ -28,5 +28,5 @@ func (c *ADConfig) Normalize() error {
 		return fmt.Errorf("server configuration error: %w", err)
 	}
 
-	return nil 
+	return nil
 }
